@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: backend
+  namespace: zurimarket
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: backend
+
+  template:
+    metadata:
+      labels:
+        app: backend
+
+    spec:
+      containers:
+        - name: backend
+
+          image: tomidedev/zurimarket-backend:v1
+
+          imagePullPolicy: Always
+
+          ports:
+            - containerPort: 5000
+
+          env:
+            - name: API_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: API_SECRET_KEY
+
+            - name: STORE_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: STORE_NAME
+
+            - name: PORT
+              value: "5000"
