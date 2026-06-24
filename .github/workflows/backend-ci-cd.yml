@@ -102,6 +102,13 @@ jobs:
           echo "${{ secrets.KUBECONFIG_DATA }}" > ~/.kube/config
 
       # ==========================================
+      # CREATE NAMESPACE
+      # ==========================================    
+      - name: Create Namespace
+        run: |
+          kubectl apply -f k8s/namespace.yaml    
+
+      # ==========================================
       # CREATE KUBERNETES SECRET
       # ==========================================
       - name: Create Backend Secret
@@ -120,6 +127,5 @@ jobs:
       # ==========================================
       - name: Deploy Backend
         run: |
-          kubectl apply -f k8s/namespace.yaml
           kubectl apply -f k8s/backend-deployment.yaml
           kubectl apply -f k8s/backend-service.yaml
