@@ -61,14 +61,14 @@ jobs:
       # ==========================================
       - name: Build Docker Image
         run: |
-          docker build -t tomidedev/zurimarket-backend:v1 .
+          docker build -t tomidedev/zurimarket-backend:latest .
 
       # ==========================================
       # PUSH IMAGE
       # ==========================================
       - name: Push Docker Image
         run: |
-          docker push tomidedev/zurimarket-backend:v1
+          docker push tomidedev/zurimarket-backend:latest
 
       # ==========================================
       # AWS CREDENTIALS
