@@ -24,6 +24,7 @@ This is the REST API powering the Zuri Market ecommerce platform. It serves the 
 ├── k8s/
 │   └── backend-deployment.yaml     # Kubernetes Deployment + NodePort Service
     └── backend-service.yaml 
+    └── namespace.yaml              # workspace inside kubernetes
 ├── .github/workflows/
 │   └── backend-ci-cd.yml          # CI/CD: test, audit, scan, build, push, deploy
 ├── server.js                # Express app: middleware, routes, server startup
@@ -35,8 +36,8 @@ This is the REST API powering the Zuri Market ecommerce platform. It serves the 
 - **`server.js`** — The entire application. Sets up Express, CORS, JSON body parsing, an API-key middleware for protected routes, and all route handlers.
 - **`data/products.js`** — A hardcoded array of product objects exported as the "database" for this demo API. No external database is used.
 - **`Dockerfile`** — Builds a production image on `node:18-alpine`.
-- **`k8s/deployment.yaml`** — Describes how the app runs in Kubernetes, including how `API_SECRET_KEY` and `STORE_NAME` are injected from a cluster Secret.
-- **`.github/workflows/deploy.yml`** — The pipeline that builds, scans, pushes, and deploys the app on every push to `main`.
+- **`k8s/backend-deployment.yaml`** — Describes how the app runs in Kubernetes, including how `API_SECRET_KEY` and `STORE_NAME` are injected from a cluster Secret.
+- **`.github/workflows/backend-ci-cd.yml`** — The pipeline that builds, scans, pushes, and deploys the app on every push to `main`.
 
 ## 4. Environment Variables
 
