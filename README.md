@@ -71,7 +71,7 @@ npm run dev     # with auto-restart (nodemon), recommended for local dev
 npm start       # plain node, closer to how it runs in production
 ```
 
-The API is available at `http://localhost:5000` (or whatever `PORT` you set).
+The API is available at `http://localhost:5000`.
 
 ## 6. API Endpoints
 
