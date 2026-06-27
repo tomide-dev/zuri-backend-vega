@@ -183,7 +183,7 @@ docker run -p 5000:5000 zurimarket-backend
 
 Deployment is fully automated via **GitHub Actions** (`.github/workflows/backend-ci-cd.yml`). On every push to `main`, the pipeline installs dependencies, runs tests and `npm audit`, builds the Docker image, scans it with Trivy, and — if the scan passes — pushes the image to Docker Hub and rolls it out to a **k3s** cluster.
 
-The underlying cluster and supporting AWS infrastructure (EC2 instance, IAM roles, Secrets Manager entries, etc.) are provisioned with **Terraform**. That provisioning code lives in a separate infrastructure repository — refer to it for setup and teardown instructions; this README only covers the application itself.
+The underlying cluster and supporting AWS infrastructure (EC2 instance, IAM roles, Secrets Manager entries, etc.) are provisioned with **Terraform**. That provisioning code lives in a separate infrastructure repository — refer to it for setup and teardown instructions; this README only covers the application itself..
 
 ## 9. Secrets
 
