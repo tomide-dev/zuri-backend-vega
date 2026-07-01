@@ -183,7 +183,7 @@ docker run -p 5000:5000 zurimarket-backend
 
 Deployment is fully automated via **GitHub Actions** (`.github/workflows/backend-ci-cd.yml`). On every push to `main`, the pipeline installs dependencies, runs tests and `npm audit`, builds the Docker image, scans it with Trivy, and — if the scan passes — pushes the image to Docker Hub and rolls it out to a **k3s** cluster.
 
-The underlying cluster and supporting AWS infrastructure (EC2 instance, IAM roles, Secrets Manager entries, etc.) are provisioned with **Terraform**. That provisioning code lives in a separate infrastructure repository — refer to it for setup and teardown instructions; this README only covers the application itself..
+The underlying cluster and supporting AWS infrastructure (EC2 instance, IAM roles, Secrets Manager entries, etc.) are provisioned with **Terraform**. That provisioning code lives in a separate infrastructure repository — refer to it for setup and teardown instructions; this README only covers the application itself.
 
 ## 9. Secrets
 
@@ -192,3 +192,23 @@ Secrets are sourced differently depending on where the app is running:
 - **Locally** — secrets come from your own `.env` file (created from `.env.example`), and are never committed to the repo.
 - **In the CI/CD pipeline** — secrets used to build, scan, and push the image (e.g. `DOCKERHUB_USERNAME`, `DOCKERHUB_TOKEN`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `KUBECONFIG_DATA`) are stored as **GitHub Actions Secrets** and injected into the workflow at runtime — they're never hardcoded in the YAML.
 - **In production** — the actual application secrets (`API_SECRET_KEY`, `STORE_NAME`) are stored in **AWS Secrets Manager**. The deploy job fetches them at deploy time and syncs them into a Kubernetes `Secret` object (`backend-secrets`), which the pod then consumes as environment variables via `secretKeyRef`. The values never appear in the manifest files or the Git history.
+
+## 10. Final Project Expectation
+
+You should be able to Access the live App at `http://44.213.121.118:30080` as shown below
+
+![Live App](zuri-market-final-deployment-image.PNG)
+
+### Overall Project 
+
+| Improvement | Why it matters |
+|---|---|
+| Multi-environment pipeline with dev, staging, and production | All changes currently go directly to production on every push to main. A dev → staging → prod promotion model with environment-scoped GitHub Secrets means changes are validated in a lower environment before reaching real users. |
+| Add HTTPS and TLS across all services end to end | All traffic currently travels over plain HTTP between the user and the frontend, and between the frontend and the backend API. HTTPS is non-negotiable for production: it protects data in transit, is required for modern browser APIs, and is expected by users. |
+| Deploy a logging, monitoring, and alerting solution (ELK stack, CloudWatch or Prometheus + Grafana) | There is currently no visibility into pod health, API response times, error rates, or resource usage after deployment. Without monitoring you are blind to problems until users report them. CloudWatch or a Prometheus/Grafana stack surfaces issues proactively. |
+
+This list is not exhaustive but provides some idea on how to move the project toward production readiness and engineering best practices
+
+---
+
+*Author [Tomide Olubanjo](linkedin.com/in/oluwatomide-olubanjo)*
