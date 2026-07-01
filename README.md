@@ -199,7 +199,7 @@ You should be able to Access the live App at `http://44.213.121.118:30080` as sh
 
 ![Live App](zuri-market-final-deployment-image.PNG)
 
-### Overall Project 
+### Overall Project Recommendation
 
 | Improvement | Why it matters |
 |---|---|
@@ -207,8 +207,7 @@ You should be able to Access the live App at `http://44.213.121.118:30080` as sh
 | Add HTTPS and TLS across all services end to end | All traffic currently travels over plain HTTP between the user and the frontend, and between the frontend and the backend API. HTTPS is non-negotiable for production: it protects data in transit, is required for modern browser APIs, and is expected by users. |
 | Deploy a logging, monitoring, and alerting solution (ELK stack, CloudWatch or Prometheus + Grafana) | There is currently no visibility into pod health, API response times, error rates, or resource usage after deployment. Without monitoring you are blind to problems until users report them. CloudWatch or a Prometheus/Grafana stack surfaces issues proactively. |
 
-This list is not exhaustive but provides some idea on how to move the project toward production readiness and engineering best practices
-
+The recommendations above are not exhaustive but represent a solid foundation for evolving the project into a production-ready solution that adheres to modern DevOps principles, security standards, scalability requirements, and engineering best practices.
 ---
 
 *Author [Tomide Olubanjo](linkedin.com/in/oluwatomide-olubanjo)*
