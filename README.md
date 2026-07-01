@@ -181,9 +181,39 @@ docker run -p 5000:5000 zurimarket-backend
 
 ## 8. Deployment
 
-Deployment is fully automated via **GitHub Actions** (`.github/workflows/backend-ci-cd.yml`). On every push to `main`, the pipeline installs dependencies, runs tests and `npm audit`, builds the Docker image, scans it with Trivy, and — if the scan passes — pushes the image to Docker Hub and rolls it out to a **k3s** cluster.
+The underlying k3s cluster and supporting AWS infrastructure (EC2 instance, IAM roles, Secrets Manager entries, etc.) are provisioned with **Terraform**. 
 
-The underlying cluster and supporting AWS infrastructure (EC2 instance, IAM roles, Secrets Manager entries, etc.) are provisioned with **Terraform**. That provisioning code lives in a separate infrastructure repository — refer to it for setup and teardown instructions; this README only covers the application itself.
+The provisioning code lives in [Zuri Market - Infrastructure](https://github.com/tomide-dev/zuri-market-vega-infra.git) — refer to it for setup and teardown instructions; this README only covers the application deployment itself.
+
+Deployment is fully automated via **GitHub Actions** (`.github/workflows/backend-ci-cd.yml`) using two jobs. On every push to `main`, the pipeline installs dependencies, runs tests and `npm audit`, builds the Docker image, and if the scan passes it pushes the image to Docker Hub and rolls it out to the **k3s** cluster running on the EC2 Instance.
+
+Edit this file as well as your **Kubernetes Manifests** (`.k8s/backend-deployment.yaml`) to match your configurations
+
+The frontend Service is exposed via Kubernetes NodePort on port 30080, making the app reachable externally at:
+
+`http://<EC2_PUBLIC_IP>:30080`
+
+### Push to your remote GitHub Repo
+
+You now have everything in place. Commit the entire application code to your GitHub repo and push everything to main. This is what triggers the first full deployment.
+
+```bash
+git add .
+git commit -m "Your_Commit_Message"
+git push origin main
+```
+From this point on, every push to main triggers the full pipeline automatically.
+
+Once the pipeline runs successfully, verify the deployment from your EC2 Instance:
+
+```bash
+kubectl get pods -n zurimarket      
+# both backend and frontend pods should show Running
+kubectl get services   
+# confirm frontend-service shows nodePort 30080
+# and backend-service shows nodePort 30893
+```
+
 
 ## 9. Secrets
 
